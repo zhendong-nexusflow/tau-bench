@@ -45,6 +45,8 @@ class ToolCallingAgent(Agent):
                 temperature=self.temperature,
             )
             next_message = res.choices[0].message.model_dump()
+            if "response_cost" not in res._hidden_params or res._hidden_params["response_cost"] is None:
+                res._hidden_params["response_cost"] = 0.0
             total_cost += res._hidden_params["response_cost"]
             action = message_to_action(next_message)
             env_response = env.step(action)
