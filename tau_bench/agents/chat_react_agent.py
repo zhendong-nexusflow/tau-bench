@@ -56,6 +56,8 @@ class ChatReActAgent(Agent):
         assert "name" in action_parsed
         assert "arguments" in action_parsed
         action = Action(name=action_parsed["name"], kwargs=action_parsed["arguments"])
+        if "response_cost" not in res._hidden_params or res._hidden_params["response_cost"] is None:
+                res._hidden_params["response_cost"] = 0.0
         return message.model_dump(), action, res._hidden_params["response_cost"]
 
     def solve(
